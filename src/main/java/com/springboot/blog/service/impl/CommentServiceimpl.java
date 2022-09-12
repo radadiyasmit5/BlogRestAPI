@@ -3,7 +3,7 @@ package com.springboot.blog.service.impl;
 import com.springboot.blog.entity.Comments;
 import com.springboot.blog.entity.Post;
 import com.springboot.blog.exception.BlogApiException;
-import com.springboot.blog.exception.ResosurceNotFoundException;
+import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.repository.CommentsRepository;
 import com.springboot.blog.repository.PostRepository;
@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.xml.stream.events.Comment;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class CommentServiceimpl implements CommentService {
     public CommentDto createComment(long postid, CommentDto commentDto) {
         Comments comments = maptoEntity(commentDto);
 
-       Post post= postRepository.findById(postid).orElseThrow(()-> new ResosurceNotFoundException("post","id",postid));
+       Post post= postRepository.findById(postid).orElseThrow(()-> new ResourceNotFoundException("post","id",postid));
 
        comments.setPost(post);
 
@@ -55,9 +54,9 @@ public class CommentServiceimpl implements CommentService {
 
     @Override
     public CommentDto getcommentbyid(long postid, long commentid) {
-        Post post = postRepository.findById(postid).orElseThrow(()->new ResosurceNotFoundException("post","postid",postid));
+        Post post = postRepository.findById(postid).orElseThrow(()->new ResourceNotFoundException("post","postid",postid));
 
-        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResosurceNotFoundException("comment","commentid",commentid));
+        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResourceNotFoundException("comment","commentid",commentid));
 
         if(!comment.getPost().getId().equals(post.getId())){
               throw new BlogApiException(HttpStatus.BAD_REQUEST,"comment does not belong to post");
@@ -68,9 +67,9 @@ public class CommentServiceimpl implements CommentService {
 
     @Override
     public CommentDto updatecomment(long postid, long commentid, CommentDto commentDto) {
-        Post post = postRepository.findById(postid).orElseThrow(()->new ResosurceNotFoundException("post","postid",postid));
+        Post post = postRepository.findById(postid).orElseThrow(()->new ResourceNotFoundException("post","postid",postid));
 
-        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResosurceNotFoundException("comment","commentid",commentid));
+        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResourceNotFoundException("comment","commentid",commentid));
 
         if(!comment.getPost().getId().equals(post.getId())){
             throw new BlogApiException(HttpStatus.BAD_REQUEST,"comment does not belong to post");
@@ -87,9 +86,9 @@ public class CommentServiceimpl implements CommentService {
 
     @Override
     public void deletecomment(long postid, long commentid) {
-        Post post = postRepository.findById(postid).orElseThrow(()->new ResosurceNotFoundException("post","postid",postid));
+        Post post = postRepository.findById(postid).orElseThrow(()->new ResourceNotFoundException("post","postid",postid));
 
-        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResosurceNotFoundException("comment","commentid",commentid));
+        Comments comment = commentsRepository.findById(commentid).orElseThrow(()->new ResourceNotFoundException("comment","commentid",commentid));
 
         if(!comment.getPost().getId().equals(post.getId())){
             throw new BlogApiException(HttpStatus.BAD_REQUEST,"comment does not belong to post");

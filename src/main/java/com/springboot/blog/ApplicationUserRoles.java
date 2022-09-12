@@ -1,2 +1,6 @@
-package com.springboot.blog;public enum ApplicationUserRoles {
+package com.springboot.blog;
+
+public enum ApplicationUserRoles {
+    ADMIN,
+    USER
 }
